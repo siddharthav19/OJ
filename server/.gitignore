@@ -1,0 +1,6 @@
+config.env
+node_modules
+/utils/inputCodes/*.cpp
+/utils/inputCodes/*.py
+/utils/inputCodes/*.java
+/utils/outputs/*.exe
