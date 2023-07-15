@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const app = express();
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const cors = require("cors");
 const userRouter = require("./routes/userRouter");
 const problemsRouter = require("./routes/problemsRouter");
 const compilerRouter = require("./routes/compilerRouter");
@@ -13,6 +14,7 @@ dotenv.config({
 
 const DB_LINK = process.env.MONGODB_URI;
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
@@ -26,4 +28,4 @@ app.use("/api/user", userRouter);
 app.use("/api/compiler", compilerRouter);
 app.use("/api/problems", problemsRouter);
 
-app.listen(3636, () => console.log("server at " + "http://localhost:3636/"));
+app.listen(5173, () => console.log("server at " + "http://localhost:5173/"));

@@ -5,6 +5,10 @@ const config: ThemeConfig = {
 };
 const theme = extendTheme({
   config,
+  fonts: {
+    // heading: `'Open Sans', sans-serif`,
+    textarea: `'Open Sans', sans-serif`,
+  },
   colors: {
     gray: {
       50: "#f9f9f9",
