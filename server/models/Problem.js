@@ -16,7 +16,7 @@ const Schema = new mongoose.Schema({
   },
   difficulty: {
     type: String,
-    enum: ["user", "admin", "mod"],
+    enum: ["easy", "medium", "hard"],
     required: [
       true,
       "A problem Should have difficulty either Easy,Medium or Hard",
