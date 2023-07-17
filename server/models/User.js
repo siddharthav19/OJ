@@ -35,5 +35,11 @@ const Schema = new mongoose.Schema(
   }
 );
 
+Schema.virtual("submissions", {
+  ref: "Submission",
+  foreignField: "user",
+  localField: "_id",
+});
+
 const User = mongoose.model("User", Schema);
 module.exports = User;

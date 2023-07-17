@@ -33,5 +33,16 @@ const Schema = new mongoose.Schema(
   }
 );
 
+Schema.pre(/^find/, function (next) {
+  this.populate({
+    path: "user",
+    select: "name",
+  }).populate({
+    path: "problem",
+    select: "name",
+  });
+  next();
+});
+
 const Submission = mongoose.model("Submission", Schema);
 module.exports = Submission;
