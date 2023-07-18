@@ -49,4 +49,19 @@ const signup = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login };
+const protectRoute = async (req, res, next) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  try {
+    const { _id } = jwt.verify(token, process.env.SECRET_STRING);
+    req.userId = await User.find({ _id }).select("_id");
+    next();
+  } catch (err) {
+    res.status(404).json({
+      error: err.message,
+      message: "authorization required",
+    });
+  }
+};
+
+module.exports = { signup, login, protectRoute };

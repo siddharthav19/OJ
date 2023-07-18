@@ -44,7 +44,7 @@ const Signup = () => {
         navigate("/");
     };
     return (
-        <HStack justifyContent={"center"} mt={"10"}>
+        <HStack justifyContent={"center"} mt={"15"} p={"10"}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack width={"50%"} minWidth={"360px"}>
                     <Box>
