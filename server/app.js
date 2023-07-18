@@ -28,4 +28,4 @@ app.use("/api/user", userRouter);
 app.use("/api/compiler", compilerRouter);
 app.use("/api/problems", problemsRouter);
 
-app.listen(5173, () => console.log("server at " + "http://localhost:5173/"));
+app.listen(3036, () => console.log("server at " + "http://localhost:3036/"));

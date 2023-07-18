@@ -16,12 +16,12 @@ const login = async (req, res, next) => {
       status: "successful",
       data: {
         name: user.name,
-        mail: user.email,
+        email: user.email,
         token,
       },
     });
   } catch (error) {
-    res.status(300).json({
+    res.status(404).json({
       status: "unsuccessful",
       message: error.message,
     });
@@ -37,12 +37,12 @@ const signup = async (req, res, next) => {
       status: "successful",
       data: {
         name: user.name,
-        mail: user.email,
+        email: user.email,
         token,
       },
     });
   } catch (error) {
-    res.status(300).json({
+    res.status(404).json({
       status: "unsuccessful",
       message: error.message,
     });
@@ -51,10 +51,29 @@ const signup = async (req, res, next) => {
 
 const protectRoute = async (req, res, next) => {
   const { authorization } = req.headers;
+
+  //if not starts with
+  if (!authorization || !authorization.startsWith("Bearer")) {
+    return res.status(401).json({
+      message: "Login to Continue",
+    });
+  }
   const token = authorization.split(" ")[1];
   try {
+    //verify jwt
     const { _id } = jwt.verify(token, process.env.SECRET_STRING);
-    req.userId = await User.find({ _id }).select("_id");
+    //verify user
+    const user = await User.find({ _id });
+
+    //user not exists
+    if (!user) {
+      return res.status(401).json({
+        message: "Login to Continue",
+      });
+    }
+
+    //user exists
+    req.userId = user._id;
     next();
   } catch (err) {
     res.status(404).json({

@@ -34,10 +34,10 @@ Schema.virtual("submissions", {
 
 Schema.statics.signup = async function (name, email, password) {
   if (!email || !password)
-    throw new Error("email and password is required and cannot be empty");
-  if (!validator.isEmail(email)) throw new Error("email is not valid");
+    throw new Error("Email and password is required and cannot be empty");
+  if (!validator.isEmail(email)) throw new Error("Email is not valid");
   const exists = await this.findOne({ email });
-  if (exists) throw new Error("user already exists with the given email");
+  if (exists) throw new Error("User already exists with the given email");
   const hashedPassword = await bcrypt.hash(password, 11);
   const user = await this.create({
     name,
@@ -50,11 +50,11 @@ Schema.statics.signup = async function (name, email, password) {
 
 Schema.statics.login = async function (email, password) {
   if (!email || !password)
-    throw new Error("email and password cannot be empty");
+    throw new Error("Email and password cannot be empty");
   const user = await this.findOne({ email });
-  if (!user) throw new Error("user does not exists with given email");
+  if (!user) throw new Error("User does not exists with given email");
   const result = await bcrypt.compare(password, user.password);
-  if (!result) throw new Error("incorrect password");
+  if (!result) throw new Error("Incorrect password");
   return user;
 };
 
