@@ -11,10 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useState } from "react";
 import { AError, postResponseUser } from "../services/externalNetworkReq";
+import useAuthContext from "../context/useAuthContext";
 
 const schema = z.object({
     password: z.string().min(3, {
@@ -33,6 +34,8 @@ const schema = z.object({
 type formDataType = z.infer<typeof schema>;
 
 const Login = () => {
+    const { token, dispatch } = useAuthContext();
+    if (token) return <Navigate to="/" />;
     const loginUser = useMutation<postResponseUser, AError, formDataType>({
         mutationFn: (values: formDataType) =>
             axios
@@ -44,6 +47,7 @@ const Login = () => {
         onSuccess: (userLogged, sentUser) => {
             const { token } = userLogged.data;
             localStorage.setItem("userToken", token);
+            dispatch({ type: "LOGIN", token });
             navigate("/");
         },
     });
@@ -67,7 +71,7 @@ const Login = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack>
                         <Box>
-                            <FormLabel htmlFor="email" fontSize={"lg"}>
+                            <FormLabel htmlFor="email" p="1" fontSize={"lg"}>
                                 Email
                             </FormLabel>
                             <Input
@@ -84,7 +88,7 @@ const Login = () => {
                             )}
                         </Box>
                         <Box>
-                            <FormLabel htmlFor="password" fontSize={"lg"}>
+                            <FormLabel htmlFor="password" p="1" fontSize={"lg"}>
                                 Password
                             </FormLabel>
                             <Input
@@ -100,8 +104,15 @@ const Login = () => {
                                 </Text>
                             )}
                         </Box>
-                        <Button mt={"2"} colorScheme="teal" type={"submit"}>
-                            Submit
+                        <Button
+                            mt={"2"}
+                            isLoading={loginUser.isLoading}
+                            disabled={loginUser.isLoading}
+                            loadingText="Logging In"
+                            colorScheme="teal"
+                            type={"submit"}
+                        >
+                            Login
                         </Button>
                     </Stack>
                 </form>

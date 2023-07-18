@@ -1,9 +1,14 @@
-import { Box, HStack, useColorMode } from "@chakra-ui/react";
+import { Box, Button, HStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import ColorModeSwitch from "./ColorModeSwitch";
+import useAuthContext from "../context/useAuthContext";
 
 const NavBar = () => {
-    const { colorMode } = useColorMode();
+    const { token, dispatch } = useAuthContext();
+    const handleLogout = () => {
+        dispatch({ type: "LOGOUT" });
+        localStorage.removeItem("userToken");
+    };
     return (
         <HStack
             padding={"20px"}
@@ -26,8 +31,22 @@ const NavBar = () => {
                 </Box>
             </HStack>
             <HStack spacing={"4"}>
-                <Link to={"/login"}>Login</Link>
-                <Link to={"/signup"}>Signup</Link>
+                {!token ? (
+                    <>
+                        <Link to={"/login"}>Login</Link>
+                        <Link to={"/signup"}>Signup</Link>
+                    </>
+                ) : (
+                    <Button
+                        mr={"6"}
+                        fontSize={"lg"}
+                        colorScheme="green"
+                        variant={"outline"}
+                        onClick={() => handleLogout()}
+                    >
+                        Logout
+                    </Button>
+                )}
                 <ColorModeSwitch />
             </HStack>
         </HStack>

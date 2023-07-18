@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    CircularProgress,
     FormLabel,
     HStack,
     Input,
@@ -10,11 +11,11 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { AError, postResponseUser } from "../services/externalNetworkReq";
+import useAuthContext from "../context/useAuthContext";
 
 const schema = z.object({
     name: z.string().min(3, {
@@ -36,6 +37,8 @@ const schema = z.object({
 type formDataType = z.infer<typeof schema>;
 
 const Signup = () => {
+    const { token, dispatch } = useAuthContext();
+    if (token) return <Navigate to="/" />;
     const signupUser = useMutation<postResponseUser, AError, formDataType>({
         mutationFn: (user: formDataType) =>
             axios
@@ -47,6 +50,7 @@ const Signup = () => {
         onSuccess: (createdUser, user) => {
             const { token } = createdUser.data;
             localStorage.setItem("userToken", token);
+            dispatch({ token, type: "LOGIN" });
             navigate("/");
         },
     });
@@ -71,7 +75,7 @@ const Signup = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack>
                         <Box>
-                            <FormLabel htmlFor="name" fontSize={"lg"}>
+                            <FormLabel htmlFor="name" p="1" fontSize={"lg"}>
                                 Name
                             </FormLabel>
                             <Input
@@ -87,7 +91,7 @@ const Signup = () => {
                             )}
                         </Box>
                         <Box>
-                            <FormLabel htmlFor="email" fontSize={"lg"}>
+                            <FormLabel htmlFor="email" p="1" fontSize={"lg"}>
                                 Email
                             </FormLabel>
                             <Input
@@ -104,7 +108,7 @@ const Signup = () => {
                             )}
                         </Box>
                         <Box>
-                            <FormLabel htmlFor="password" fontSize={"lg"}>
+                            <FormLabel htmlFor="password" p="1" fontSize={"lg"}>
                                 Password
                             </FormLabel>
                             <Input
@@ -120,8 +124,15 @@ const Signup = () => {
                                 </Text>
                             )}
                         </Box>
-                        <Button mt={"2"} colorScheme="teal" type={"submit"}>
-                            Submit
+                        <Button
+                            mt={"2"}
+                            isLoading={signupUser.isLoading}
+                            disabled={signupUser.isLoading}
+                            loadingText="Signing Up"
+                            colorScheme="teal"
+                            type={"submit"}
+                        >
+                            Signup
                         </Button>
                     </Stack>
                 </form>
