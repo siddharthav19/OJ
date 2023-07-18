@@ -27,6 +27,7 @@ const NavBar = () => {
             </HStack>
             <HStack spacing={"4"}>
                 <Link to={"/login"}>Login</Link>
+                <Link to={"/signup"}>Signup</Link>
                 <ColorModeSwitch />
             </HStack>
         </HStack>
