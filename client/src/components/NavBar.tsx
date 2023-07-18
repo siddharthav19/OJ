@@ -11,6 +11,7 @@ const NavBar = () => {
     };
     return (
         <HStack
+            height={"70px"}
             padding={"20px"}
             justifyContent={"space-between"}
             fontSize={"large"}
@@ -19,7 +20,7 @@ const NavBar = () => {
             <HStack>
                 <Link to={"/"}>Home</Link>
             </HStack>
-            <HStack spacing={"10"}>
+            <HStack spacing={"20"}>
                 <Box>
                     <Link to={"/problems"}>Problems</Link>
                 </Box>
@@ -30,7 +31,7 @@ const NavBar = () => {
                     <Link to={"/submissions"}>Submissions</Link>
                 </Box>
             </HStack>
-            <HStack spacing={"4"}>
+            <HStack spacing={"6"}>
                 {!token ? (
                     <>
                         <Link to={"/login"}>Login</Link>
@@ -38,9 +39,8 @@ const NavBar = () => {
                     </>
                 ) : (
                     <Button
-                        mr={"6"}
                         fontSize={"lg"}
-                        colorScheme="green"
+                        border={"none"}
                         variant={"outline"}
                         onClick={() => handleLogout()}
                     >

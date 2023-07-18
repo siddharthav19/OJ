@@ -61,7 +61,7 @@ const Login = () => {
         await loginUser.mutate(value);
     };
     return (
-        <HStack justifyContent={"center"} mt={"15"} p={"10"}>
+        <HStack justifyContent={"center"} mt={"15"} p={"10"} width={"91%"}>
             <Stack
                 width={{
                     lg: "460px",
