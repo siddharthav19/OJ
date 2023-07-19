@@ -63,7 +63,7 @@ const protectRoute = async (req, res, next) => {
     //verify jwt
     const { _id } = jwt.verify(token, process.env.SECRET_STRING);
     //verify user
-    const user = await User.find({ _id });
+    const user = await User.findOne({ _id });
 
     //user not exists
     if (!user) {

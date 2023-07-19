@@ -16,3 +16,20 @@ export interface AError extends Error {
           };
      };
 }
+
+
+export interface Problem {
+     difficulty: "easy" | "medium" | "hard";
+     name: string;
+     id: string;
+     _id?: string;
+     submissionsCount: number;
+     description?: string;
+}
+
+export interface AllProblems {
+     status: string;
+     result: {
+          problems: Problem[];
+     };
+}

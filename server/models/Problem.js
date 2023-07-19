@@ -15,6 +15,10 @@ const Schema = new mongoose.Schema(
       type: String,
       required: [true, "A Problem Shoud have it's description"],
     },
+    submissionsCount: {
+      type: Number,
+      default: 0,
+    },
     difficulty: {
       type: String,
       enum: ["easy", "medium", "hard"],

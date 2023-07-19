@@ -10,7 +10,7 @@ const ColorModeSwitch = () => {
                 onChange={() => toggleColorMode()}
             />
             <Text whiteSpace={"nowrap"}>
-                {colorMode === "dark" ? "dark" : "light"}
+                {colorMode === "dark" ? "☀️" : "🌙"}
             </Text>
         </HStack>
     );
