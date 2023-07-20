@@ -30,22 +30,35 @@ interface executionResult {
     };
 }
 
+interface CompilerEvalError extends Error {
+    response: {
+        status: string;
+        data: {
+            output: string;
+            compilation: string;
+            message?: {
+                fullmessage: string;
+            };
+        };
+    };
+}
+
 const CodeIde = () => {
-    const [resultState, setResultState] = useState<string>("");
     const { colorMode } = useColorMode();
-    const executeCode = useMutation({
-        mutationFn: (codeBundle: FormData) =>
-            axios
-                .post<executionResult>(
-                    "http://localhost:5000/api/compiler",
-                    codeBundle
-                )
-                .then((res) => res.data),
-        onSuccess: (executedOutput, sendObj) => {
-            if (executedOutput.status === "0")
-                setResultState("Compilation error");
-            else setResultState(executedOutput.data.output);
-        },
+    const fn = (codeBundle: FormData) =>
+        axios
+            .post<executionResult>(
+                "http://localhost:5000/api/compiler",
+                codeBundle
+            )
+            .then((res) => res.data);
+
+    const executeCode = useMutation<
+        executionResult,
+        CompilerEvalError,
+        FormData
+    >({
+        mutationFn: (formData: FormData) => fn(formData),
     });
 
     const {
@@ -53,16 +66,12 @@ const CodeIde = () => {
         register,
         formState: { isSubmitting },
     } = useForm<FormData>();
-
+    const onSubmit = async (data: FormData) => {
+        await executeCode.mutate(data);
+    };
     return (
         <Stack>
-            <form
-                onSubmit={handleSubmit((e) => {
-                    if (e.code !== "")
-                        executeCode.mutate({ ...e, evalType: "run" });
-                })}
-                autoComplete="off"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <Stack padding={"30px"} spacing={"10px"}>
                     <Box>
                         <Select
@@ -138,7 +147,7 @@ const CodeIde = () => {
                 </HStack>
             )}
 
-            {resultState && (
+            {executeCode.error ? (
                 <Box
                     maxW={"85%"}
                     justifyContent={"center"}
@@ -149,7 +158,22 @@ const CodeIde = () => {
                     padding={"5px 20px"}
                     borderRadius={"5"}
                 >
-                    {resultState}
+                    {"Error"}
+                </Box>
+            ) : (
+                <Box
+                    maxW={"85%"}
+                    justifyContent={"center"}
+                    ml={"8"}
+                    mb={"5"}
+                    height={"50px"}
+                    bg={"teal.300"}
+                    padding={"5px 20px"}
+                    borderRadius={"5"}
+                    whiteSpace={"pre-wrap"}
+                    boxSize={"auto"}
+                >
+                    {executeCode.data?.data.output}
                 </Box>
             )}
         </Stack>
