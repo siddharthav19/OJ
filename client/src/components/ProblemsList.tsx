@@ -62,7 +62,7 @@ const ProblemsList = () => {
                             <Tbody>
                                 {problemsQuery.data?.result.problems.map(
                                     (currentProblem, index) => (
-                                        <Tr>
+                                        <Tr key={currentProblem._id}>
                                             <Td fontSize={"lg"}>{index + 1}</Td>
                                             <Td
                                                 color={"linkedin.600"}
@@ -70,7 +70,7 @@ const ProblemsList = () => {
                                                 fontSize={"lg"}
                                             >
                                                 <Link
-                                                    to={`/problems/${currentProblem._id}`}
+                                                    to={`/problems/p/${currentProblem._id}`}
                                                 >
                                                     {currentProblem.name}
                                                 </Link>

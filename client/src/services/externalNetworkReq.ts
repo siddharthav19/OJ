@@ -24,6 +24,7 @@ export interface Problem {
      id: string;
      _id?: string;
      submissionsCount: number;
+     testCaseId?: string;
      description?: string;
 }
 

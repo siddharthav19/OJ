@@ -23,7 +23,7 @@ const getAllProblems = async (req, res, next) => {
 const getProblemById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const problem = await Problem.find({ _id: id });
+    const problem = await Problem.findOne({ _id: id });
     res.status(200).json({
       status: "successful",
       result: {

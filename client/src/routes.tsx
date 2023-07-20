@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import CodeIde from "./components/CodeIde";
 import Layout from "./components/Layout";
-import Signup from "./components/Signup";
 import Login from "./components/Login";
 import ProblemsList from "./components/ProblemsList";
+import Signup from "./components/Signup";
+import ProblemIndividual from "./components/ProblemIndividual";
 
 const router = createBrowserRouter([
     {
@@ -26,11 +27,11 @@ const router = createBrowserRouter([
                 path: "problems",
                 element: <ProblemsList />,
             },
+            {
+                path: "/problems/p/:id",
+                element: <ProblemIndividual />,
+            },
         ],
-    },
-    {
-        path: "/problems/:id",
-        element: "",
     },
 ]);
 

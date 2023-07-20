@@ -32,7 +32,7 @@ const NavBar = () => {
                 </Box>
             </HStack>
             <HStack spacing={"6"}>
-                {!token ? (
+                {!(token || localStorage.getItem("userToken")) ? (
                     <>
                         <Link to={"/login"}>Login</Link>
                         <Link to={"/signup"}>Signup</Link>
