@@ -17,6 +17,7 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.3.2",
     "morgan": "^1.10.0",
+    "superagent": "^8.0.9",
     "uuid": "^9.0.0",
     "validator": "^13.9.0"
   }

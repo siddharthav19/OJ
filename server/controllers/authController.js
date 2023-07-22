@@ -51,13 +51,13 @@ const signup = async (req, res, next) => {
 
 const protectRoute = async (req, res, next) => {
   const { authorization } = req.headers;
-  console.log(authorization);
+  // console.log(authorization);
   if (!authorization || !authorization.startsWith("Bearer")) {
     return res.status(401).json({
       message: "Login to Continue",
     });
   }
-  console.log("x");
+  // console.log("x");
   const token = authorization.split(" ")[1];
   try {
     //verify jwt

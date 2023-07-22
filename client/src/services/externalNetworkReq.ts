@@ -19,7 +19,7 @@ export interface AError extends Error {
 
 
 export interface Problem {
-     difficulty: "easy" | "medium" | "hard";
+     difficulty: string;
      name: string;
      id: string;
      _id?: string;

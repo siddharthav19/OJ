@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     CircularProgress,
+    CircularProgressLabel,
     FocusLock,
     HStack,
     Select,
@@ -11,12 +12,12 @@ import {
     Text,
     Textarea,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Navigate, useParams } from "react-router-dom";
-import { AError, Problem } from "../services/externalNetworkReq";
-import useAuthContext from "../context/useAuthContext";
 import { useForm } from "react-hook-form";
+import { Navigate, useParams } from "react-router-dom";
+import useAuthContext from "../context/useAuthContext";
+import { AError, Problem } from "../services/externalNetworkReq";
 
 interface individualProblem {
     status: string;
@@ -31,15 +32,26 @@ interface FormData {
     evalType: string;
 }
 
+interface submitResult {
+    status: string;
+}
+
+interface submitError extends Error {
+    response: {
+        data: {
+            status: string;
+            message: string;
+        };
+    };
+}
+
 const ProblemIndividual = () => {
     const {
         handleSubmit,
         register,
         formState: { isSubmitting },
     } = useForm<FormData>();
-    const onSubmit = (e: FormData) => {
-        console.log(e);
-    };
+
     const { id } = useParams();
     const token = localStorage.getItem("userToken");
     const { token: t } = useAuthContext();
@@ -57,7 +69,31 @@ const ProblemIndividual = () => {
                     }
                 )
                 .then((res) => res.data),
+        staleTime: 24 * 60 * 60 * 1000,
     });
+
+    const submissionQuery = useMutation<submitResult, submitError, FormData>({
+        mutationFn: (data: FormData) =>
+            axios
+                .post<submitResult>(
+                    `http://localhost:3036/api/problems/${id}`,
+                    {
+                        ...data,
+                        evalType: "judge",
+                    },
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                )
+                .then((res) => res.data),
+    });
+    const onSubmit = async (e: FormData) => {
+        console.log(e);
+        await submissionQuery.mutate(e);
+    };
     if (problemQuery.isLoading)
         return (
             <Stack
@@ -78,20 +114,66 @@ const ProblemIndividual = () => {
                 />
             </Stack>
         );
+    console.log(problemQuery.data?.result.problem);
     return (
         <Stack mt="2" p="6">
             <SimpleGrid minChildWidth={"550px"} spacing={"6"}>
                 <Stack>
+                    <HStack alignItems={"baseline"} spacing={"6"}>
+                        <Text
+                            fontSize={"2xl"}
+                            fontWeight={"medium"}
+                            textColor={"teal.300"}
+                        >
+                            {problemQuery.data?.result.problem.name}
+                        </Text>
+                        <Text
+                            fontSize={"lg"}
+                            fontWeight={"medium"}
+                            color={"indianred"}
+                        >
+                            {problemQuery.data?.result.problem.difficulty.toLocaleUpperCase()}
+                        </Text>
+                    </HStack>
                     <Text
-                        fontSize={"2xl"}
-                        fontWeight={"medium"}
-                        textColor={"teal.200"}
+                        fontSize={"lg"}
+                        lineHeight={"1.6"}
+                        fontWeight={"normal"}
                     >
-                        {problemQuery.data?.result.problem.name}
-                    </Text>
-                    <Text fontSize={"lg"} fontWeight={"normal"}>
                         {problemQuery.data?.result.problem.description}
                     </Text>
+
+                    {submissionQuery.isLoading && (
+                        <HStack spacing={"5"} pt="2">
+                            <CircularProgress
+                                color={"orange.400"}
+                                isIndeterminate
+                                fontSize={"sm"}
+                            ></CircularProgress>
+                            <Text fontSize={"lg"}>Judging your code </Text>
+                        </HStack>
+                    )}
+                    {submissionQuery.data && (
+                        <Box
+                            fontSize={"xl"}
+                            fontWeight={"medium"}
+                            color={
+                                submissionQuery.data.status.charAt(0) === "A"
+                                    ? "green.300"
+                                    : "red.500"
+                            }
+                        >
+                            {submissionQuery.data.status}
+                        </Box>
+                    )}
+
+                    {submissionQuery.error && (
+                        <Box fontSize={"md"} color={"red.500"} pt="2">
+                            {
+                                "ERROR (check) for compilation errors and memory leaks"
+                            }
+                        </Box>
+                    )}
                 </Stack>
                 <Stack>
                     <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>

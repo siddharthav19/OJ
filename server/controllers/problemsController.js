@@ -1,11 +1,15 @@
-const Problem = require("./../models/Problem");
+const { setDefaultResultOrder } = require("dns");
+setDefaultResultOrder("ipv4first");
+const Submission = require("./../models/Submission");
+const Problem = require("../models/Problem");
+const { default: axios } = require("axios");
 
 const getAllProblems = async (req, res, next) => {
   try {
     const problems = await Problem.find({}).select(
       "difficulty name submissionsCount"
     );
-    console.log(req.userId, " hello");
+    console.log(req.userId);
     res.status(200).json({
       status: "successful",
       result: {

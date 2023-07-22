@@ -1,7 +1,10 @@
 const express = require("express");
-const { compileCode: compiler } = require("../controllers/compilerController");
+const { protectRoute } = require("./../controllers/authController");
+
+const compilerController = require("../controllers/compilerController");
 const router = express.Router();
 
-router.post("/", compiler);
+router.post("/", compilerController.compileCode);
+router.post("/judge", protectRoute, compilerController.judgeCode);
 
 module.exports = router;

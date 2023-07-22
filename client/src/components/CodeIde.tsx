@@ -48,7 +48,7 @@ const CodeIde = () => {
     const fn = (codeBundle: FormData) =>
         axios
             .post<executionResult>(
-                "http://localhost:5000/api/compiler",
+                "http://localhost:3036/api/compiler",
                 codeBundle
             )
             .then((res) => res.data);

@@ -23,7 +23,7 @@ const Schema = new mongoose.Schema(
     language: { type: String, required: true },
     verdict: {
       type: String,
-      enum: ["AC", "WA", "RE"],
+      enum: ["ACCEPTED", "WRONG ANSWER", "ERROR"],
       required: [true, "You should provide the verdict"],
     },
   },
