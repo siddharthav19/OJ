@@ -4,3 +4,4 @@ node_modules
 /utils/inputCodes/*.py
 /utils/inputCodes/*.java
 /utils/outputs/*.exe
+devdata
