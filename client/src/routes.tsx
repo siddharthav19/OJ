@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import ProblemsList from "./components/ProblemsList";
 import Signup from "./components/Signup";
 import ProblemIndividual from "./components/ProblemIndividual";
+import SubmissionsList from "./components/SubmissionsList";
 
 const router = createBrowserRouter([
     {
@@ -28,8 +29,12 @@ const router = createBrowserRouter([
                 element: <ProblemsList />,
             },
             {
-                path: "/problems/p/:id",
+                path: "problems/p/:id",
                 element: <ProblemIndividual />,
+            },
+            {
+                path: "submissions",
+                element: <SubmissionsList />,
             },
         ],
     },
