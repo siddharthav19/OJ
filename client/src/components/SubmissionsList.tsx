@@ -34,6 +34,9 @@ const SubmissionsList = () => {
                     }
                 )
                 .then((res) => res.data),
+        staleTime: Infinity,
+        refetchOnReconnect: true,
+        refetchOnWindowFocus: true,
     });
 
     return (

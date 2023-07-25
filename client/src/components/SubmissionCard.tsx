@@ -26,9 +26,9 @@ const SubmissionCard = () => {
                     }
                 )
                 .then((res) => res.data),
-        //    staleTime: Infinity,
-        //    refetchOnReconnect: false,
-        //    refetchOnWindowFocus: false,
+        staleTime: Infinity,
+        refetchOnReconnect: true,
+        refetchOnWindowFocus: false,
     });
     return (
         <Stack direction="row">
