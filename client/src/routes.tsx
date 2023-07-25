@@ -6,6 +6,7 @@ import ProblemsList from "./components/ProblemsList";
 import Signup from "./components/Signup";
 import ProblemIndividual from "./components/ProblemIndividual";
 import SubmissionsList from "./components/SubmissionsList";
+import SubmissionCard from "./components/SubmissionCard";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
                 element: <SubmissionsList />,
             },
         ],
+    },
+    {
+        path: "/submissions/:submissionId",
+        element: <SubmissionCard />,
     },
 ]);
 

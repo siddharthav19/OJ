@@ -7,7 +7,7 @@ const problemsRouter = express.Router();
 
 //problems/:id/submissions
 //problems/:id/submissions/:submissionId
-problemsRouter.use("/:id/submissions", submissionRouter);
+problemsRouter.use("/submissions", submissionRouter);
 problemsRouter.get("/", problemsController.getAllProblems);
 problemsRouter
   .route("/:id")
