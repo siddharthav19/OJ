@@ -5,3 +5,4 @@ node_modules
 /utils/inputCodes/*.java
 /utils/outputs/*.exe
 devdata
+server/controllers/out.txt

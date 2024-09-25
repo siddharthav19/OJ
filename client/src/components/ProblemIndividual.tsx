@@ -190,7 +190,7 @@ const ProblemIndividual = () => {
                                 >
                                     <option value="cpp">C++ 17</option>
                                     <option value="py">Python</option>
-                                    <option value="java">Java</option>
+                                    {/* <option value="java">Java</option> */}
                                 </Select>
                             </Box>
                             <Box>
