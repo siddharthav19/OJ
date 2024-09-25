@@ -14,7 +14,7 @@ const Schema = new mongoose.Schema(
     },
     submittedAt: {
       type: Date,
-      default: Date.now(),
+      default: Date.now,
     },
     code: {
       type: String,
